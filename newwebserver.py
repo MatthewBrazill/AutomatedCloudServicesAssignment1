@@ -2,7 +2,7 @@
 
 
 # Imports
-import datetime
+import uuid
 import sys
 import boto3
 import logging
@@ -13,6 +13,9 @@ s3 = boto3.resource("s3")
 # Global Variables
 global forceCreation
 forceCreation = False
+
+global processID
+processID = str(uuid.uuid4())
 
 # TODO Add more extensive logging
 
@@ -32,13 +35,13 @@ def main():
     if "-bucket_name" in sys.argv:
         bucketName = sys.argv[sys.argv.index("-bucket_name") + 1]
     else:
-        bucketName = "webserver-bucket"
+        bucketName = f"webserver-bucket-{processID}"
     logging.info("Bucket name set to '%s'.", bucketName)
 
     if "-instance_name" in sys.argv:
         instanceName = sys.argv[sys.argv.index("-instance_name") + 1]
     else:
-        instanceName = "webserver"
+        instanceName = f"webserver-{processID}"
     logging.info("EC2 Instance name set to '%s'.", instanceName)
 
     if "-web_files_path" in sys.argv:
@@ -96,7 +99,10 @@ def cleanup() -> bool:
     much cost as possible.
     """
 
-    # TODO Implement cleanup
+    # TODO Expand cleanup to include all resources
+
+    
+
     return True
 
 
