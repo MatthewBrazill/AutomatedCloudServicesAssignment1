@@ -33,13 +33,13 @@ def main():
         bucketName = sys.argv[sys.argv.index("-bucket_name") + 1]
     else:
         bucketName = "webserver-bucket"
-    logging.info("Bucket name set to '{bucketName}'.")
+    logging.info("Bucket name set to '%s'.", bucketName)
 
     if "-instance_name" in sys.argv:
         instanceName = sys.argv[sys.argv.index("-instance_name") + 1]
     else:
         instanceName = "webserver"
-    logging.info("EC2 Instance name set to '{instanceName}'.")
+    logging.info("EC2 Instance name set to '%s'.", instanceName)
 
     if "-web_files_path" in sys.argv:
         webFilesPath = sys.argv[sys.argv.index("-web_files_path") + 1]
@@ -74,7 +74,7 @@ def createBucket(bucketName: str) -> bool:
                 "LocationConstraint": "eu-west-1"
             }
         )
-        print("\n" + resp + "\n")
+        print(f"\n" + resp + "\n")
 
     except:
         logging.error("An unexpected error occurred. Aborting...")
@@ -101,11 +101,10 @@ def cleanup() -> bool:
 
 
 # Starting the program
-logfile = "./logs/"+str(datetime.datetime)+".log"
 logging.basicConfig(
-    filename=logfile,
-    encoding="utf-8",
-    level=logging.DEBUG
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename="./logs/logfile.log",
+    level="DEBUG"
 )
 
 logging.info("Starting program...")
