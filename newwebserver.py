@@ -6,22 +6,35 @@ import uuid
 import sys
 import boto3
 import logging
+import asyncio
 
 # Resources
 s3 = boto3.resource("s3")
 
-# Global Variables
-global forceCreation
-forceCreation = False
+# Logging Configuration
+logging.basicConfig(
+    format="%(asctime)s %(levelname)s: %(message)s",
+    filename="./logs/logfile.log",
+    level="DEBUG"
+)
 
+# Global Variables
+# An ID for the creation process. This ID is used to unique-ify the S3 bucket and instance name.
 global processID
 processID = str(uuid.uuid4())
+logging.info("Creating session UUID: {processID}", processID)
 
-# TODO Add more extensive logging
+# The AWS account ID that identifies the user. This is needed for the cleanup process.
+global accountID
+accountID = str(boto3.client('sts').get_caller_identity()['Account'])
+logging.info("Finding aws account ID: {accountID}", accountID)
+
+# TODO
+# 1. Add more extensive logging
 
 
 # Main function
-def main():
+async def main():
     """The main function to start all the processes and gather user input.
 
     After gathering the details from the user the program starts all the 
@@ -51,14 +64,17 @@ def main():
     logging.info("Default webfiles used.")
 
     # Create the Bucket
-    createBucket(bucketName)
+    await createBucket(bucketName)
 
     # Create the Instance
-    createInstance(instanceName)
+    await createInstance(instanceName)
+
+    # Cleanup while testing
+    await cleanup(s3.Bucket(bucketName))
 
 
 # Function to create the Bucket
-def createBucket(bucketName: str) -> bool:
+async def createBucket(bucketName: str) -> bool:
     """This function creates the S3 Bucket.
 
     This function creates the Bucket that contains the image files needed for 
@@ -70,48 +86,49 @@ def createBucket(bucketName: str) -> bool:
     bucket = s3.Bucket(bucketName)
 
     try:
-        logging.info("Creating the bucket...")
-        resp = bucket.create(
+        logging.info("Creating the S3 bucket...")
+        resp = await bucket.create(
             Bucket=bucketName,
             CreateBucketConfiguration={
                 "LocationConstraint": "eu-west-1"
             }
         )
-        print(f"\n" + resp + "\n")
 
     except:
         logging.error("An unexpected error occurred. Aborting...")
-        cleanup()
+        await cleanup(bucket)
 
+    logging.info("Bucket successfully created.")
     return True
 
 
 # Function to create the instance
-def createInstance(instanceName: str) -> bool:
+async def createInstance(instanceName: str) -> bool:
     return
 
 
 # The cleanup function
-def cleanup() -> bool:
+async def cleanup(bucket) -> bool:
     """A cleanup function to remove all created resources.
 
     A function to clean up after a program failure to try and prevent as 
     much cost as possible.
     """
 
+    logging.info("Starting cleanup...")
     # TODO Expand cleanup to include all resources
 
-    
+    # Bucket Removal
+    logging.info("Deleting S3 Bucket...")
+    resp = bucket.delete(
+        ExpectedBucketOwner=accountID
+    )
 
+    logging.info("Cleanup complete.")
     return True
 
 
 # Starting the program
-logging.basicConfig(
-    format="%(asctime)s %(levelname)s: %(message)s",
-    filename="./logs/logfile.log",
-    level="DEBUG"
-)
-
 logging.info("Starting program...")
-main()
+asyncio.get_event_loop().run_until_complete(main())
+logging.info("Program complete.")
