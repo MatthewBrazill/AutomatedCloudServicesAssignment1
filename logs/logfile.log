@@ -721,3 +721,42 @@ Unknown parameter in input: "DryRun", must be one of: ACL, Bucket, CreateBucketC
 
 
 
+2021-03-06 17:11:48,355 INFO: Creating session UUID: 03c03a37-598f-418f-8129-817ad209867e
+2021-03-06 17:11:48,926 INFO: Finding aws account ID: 247703639735
+2021-03-06 17:11:48,926 INFO: Starting program...
+2021-03-06 17:11:48,926 INFO: Bucket name set to 'webserver-assignment-bucket-brazill'.
+2021-03-06 17:11:48,927 INFO: EC2 Instance name set to 'webserver-03c03a37-598f-418f-8129-817ad209867e'.
+2021-03-06 17:11:48,927 INFO: Using default webfiles.
+2021-03-06 17:11:48,927 INFO: Creating the S3 bucket...
+2021-03-06 17:11:49,468 WARNING: Bucket already exists but belongs to you.
+2021-03-06 17:11:49,469 INFO: Uploading webserver files to S3 Bucket.
+2021-03-06 17:11:49,738 INFO: Uploading complete.
+2021-03-06 17:11:50,167 INFO: Key Pair creation succeeded.
+2021-03-06 17:11:51,060 INFO: Security Group creation succeeded.
+2021-03-06 17:12:23,202 INFO: Instance creation succeeded.
+2021-03-06 17:12:23,204 INFO: Program complete. The web server should now be active.
+
+
+
+2021-03-06 19:29:34,795 INFO: Creating session UUID: 3d740dc9-50e7-4f11-8dbb-3c8c49a809bd
+2021-03-06 19:29:35,399 INFO: Finding aws account ID: 247703639735
+2021-03-06 19:29:35,399 INFO: Starting program...
+2021-03-06 19:29:35,401 INFO: Creating a new Key Pair...
+2021-03-06 19:29:35,863 INFO: Key Pair 'webserver-key-3d740dc9-50e7-4f11-8dbb-3c8c49a809bd' created successfully.
+2021-03-06 19:29:35,863 INFO: Creating a new Security Group...
+2021-03-06 19:29:37,009 INFO: Security Group 'webserver-security-group-3d740dc9-50e7-4f11-8dbb-3c8c49a809bd' created successfully.
+2021-03-06 19:29:37,009 INFO: Creating the EC2 Instance...
+2021-03-06 19:29:53,731 INFO: Instance created successfully on IP: 54.216.209.193
+2021-03-06 19:29:54,088 INFO: Creating the S3 bucket...
+2021-03-06 19:29:54,620 WARNING: Bucket already exists but belongs to you.
+2021-03-06 19:59:32,821 INFO: Creating session UUID: b6b12ba1-6ecb-4759-8c73-ed00a9fd3caa
+2021-03-06 19:59:33,412 INFO: Finding aws account ID: 247703639735
+2021-03-06 19:59:33,413 INFO: Starting program...
+2021-03-06 19:59:33,416 INFO: Creating a new Key Pair...
+2021-03-06 19:59:33,944 INFO: Key Pair 'webserver-key-b6b12ba1-6ecb-4759-8c73-ed00a9fd3caa' created successfully.
+2021-03-06 19:59:33,944 INFO: Creating a new Security Group...
+2021-03-06 19:59:34,971 INFO: Security Group 'webserver-security-group-b6b12ba1-6ecb-4759-8c73-ed00a9fd3caa' created successfully.
+2021-03-06 19:59:34,971 INFO: Creating the EC2 Instance...
+2021-03-06 19:59:52,081 INFO: Instance created successfully on IP: 54.216.29.202
+2021-03-06 20:00:19,100 INFO: Creating the S3 bucket...
+2021-03-06 20:00:19,647 WARNING: Bucket already exists but belongs to you.

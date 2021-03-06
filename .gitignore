@@ -1,0 +1,5 @@
+# All AWS config files
+.aws/*
+
+# Logging files
+logs/*
