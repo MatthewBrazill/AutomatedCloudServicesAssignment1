@@ -55,14 +55,12 @@ def main():
     # Variables
     startupScript = open(f"./scripts/startupScript.sh", "r").read()
 
-    print(sys.argv)
-
     # Getting arguments from user. If there are none defaults are used.
     if "--bucket_name" in sys.argv:
         bucketName = sys.argv[sys.argv.index("--bucket_name") + 1]
         logging.info("Bucket name set to '%s'.", bucketName)
     else:
-        bucketName = f"webserver-assignment-bucket-{processID}"
+        bucketName = f"webserver-bucket-{processID}"
 
     if "--help" in sys.argv or "-h" in sys.argv:
         doHelp()

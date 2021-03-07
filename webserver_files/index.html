@@ -1,12 +1,32 @@
 <!DOCTYPE html>
 <html>
+
     <head>
         <meta charset="UTF-8">
         <title>Example Page</title>
     </head>
 
-    <body>
+    <body onload="main()">
         <h1>Assignment example page</h1>
-        <img src='https://webserver-assignment-bucket-brazill.s3-eu-west-1.amazonaws.com/image.jpg' alt='Example Image'>
+        <img src='https://webserver-bucket-88034272-913b-482a-8b6a-30a1c1dd979a.s3-eu-west-1.amazonaws.com/image.jpg' alt='Example Image'>
+
+        <p>
+            Some instance meta data:
+
+            <table>
+                <tr>
+                    <td>Instance ID</td>
+                    <td>instance_id</td>
+                </tr>
+                <tr>
+                    <td>Instance Type</td>
+                    <td>instance_type</td>
+                </tr>
+                <tr>
+                    <td>Public IPv4</td>
+                    <td>public_ipv4</td>
+                </tr>
+            </table>
+        </p>
     </body>
 </html>
