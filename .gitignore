@@ -3,3 +3,6 @@
 
 # Logging files
 logs/*
+
+# EC2 Key Pair files
+webserver_files/webserver-key*
