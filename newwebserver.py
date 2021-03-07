@@ -3,11 +3,13 @@
 
 # Imports
 import uuid
+import urllib
 import sys
 import boto3
 import logging
 import os
 import subprocess
+import re
 
 # Resources
 s3 = boto3.resource("s3")
@@ -53,16 +55,37 @@ def main():
     # Variables
     startupScript = open(f"./scripts/startupScript.sh", "r").read()
 
+    print(sys.argv)
+
     # Getting arguments from user. If there are none defaults are used.
     if "--bucket_name" in sys.argv:
-        bucketName = sys.argv[sys.argv.index("-bucket_name") + 1]
+        bucketName = sys.argv[sys.argv.index("--bucket_name") + 1]
         logging.info("Bucket name set to '%s'.", bucketName)
     else:
-        bucketName = "webserver-assignment-bucket-brazill"
+        bucketName = f"webserver-assignment-bucket-{processID}"
 
-    if "--help" or "-h" in sys.argv:
+    if "--help" in sys.argv or "-h" in sys.argv:
         doHelp()
         return
+
+    # Updating the files in the 'webserver_files' folder.
+    logging.info("Updating default image...")
+    img = open(urllib.request.urlretrieve("https://witacsresources.s3-eu-west-1.amazonaws.com/image.jpg")[0])
+    img.close()
+
+    # Changing the index.html to use the new bucket.
+    logging.info("Updating index.html...")
+    htmlFile = open("webserver_files/index.html", "r")
+    html = htmlFile.read()
+    htmlFile.close()
+    html = re.sub(
+        r"<img src='.*' alt='Example Image'>",
+        "<img src='https://" + bucketName + ".s3-eu-west-1.amazonaws.com/image.jpg' alt='Example Image'>",
+        html
+    )
+    htmlFile = open("webserver_files/index.html", "w")
+    htmlFile.write(html)
+    htmlFile.close()
 
     # Create the Instance
     instanceReady = createInstance(startupScript)
@@ -123,15 +146,6 @@ def fillBucket(bucket: object) -> bool:
                 file.name,
                 ExtraArgs={'ACL': 'public-read'}
             )
-
-        # Use the S3 bucket as a way of putting the index file onto the EC2
-        # instance by uploading it from here and then downloading it in the
-        # startup script.
-        bucket.upload_file(
-            "./webserver_files/index.html",
-            "index.html",
-            ExtraArgs={'ACL': 'public-read'}
-        )
 
     except Exception as err:
         logging.error("Uploading failed: " + str(err))
