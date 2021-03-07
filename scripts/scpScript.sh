@@ -1,14 +1,16 @@
 #! /bin/sh
 
-KEY_NAME=$1
+KEY_NAME=../$1.pem
 INSTANCE_IP=$2
-TEMP_FILE=$(mktemp)
 
-cat $KEY_NAME.pem > $TEMP_FILE
+$(chmod 600 $KEY_NAME)
 
-$(scp -i $TEMP_FILE ../webserver_files/index.html ec2-user@$INSTANCE_IP:~/index.html)
-$(scp -i $TEMP_FILE ./monitor.sh ec2-user@$INSTANCE_IP:~/monitor.sh)
-$(ssh -i $TEMP_FILE ec2-user@$INSTANCE_IP 'mv ~/index.html /var/www/html/index.html')
-$(ssh -i $TEMP_FILE ec2-user@$INSTANCE_IP '~/monitor.sh')
+$(echo $KEY_NAME)
 
-echo "success"
+# Setting up the index.html file
+$(scp -o StrictHostKeyChecking=no -i $KEY_NAME ../webserver_files/index.html ec2-user@$INSTANCE_IP:~/index.html)
+$(ssh -o StrictHostKeyChecking=no -i $KEY_NAME ec2-user@$INSTANCE_IP 'mv ~/index.html /var/www/html/index.html')
+
+# Adding the monitoring script
+$(scp -o StrictHostKeyChecking=no -i $KEY_NAME ./monitor.sh ec2-user@$INSTANCE_IP:~/monitor.sh)
+$(ssh -o StrictHostKeyChecking=no -i $KEY_NAME ec2-user@$INSTANCE_IP '~/monitor.sh')

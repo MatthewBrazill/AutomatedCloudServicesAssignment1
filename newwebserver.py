@@ -230,8 +230,7 @@ def createInstance(startupScript: str) -> bool:
         logging.error("Security Group creation failed: " + str(err))
         return False
     else:
-        logging.info("Security Group '%s' created successfully.",
-                     securityGroup.group_name)
+        logging.info("Security Group '%s' created successfully.", securityGroup.group_name)
 
     try:
         # Creating the EC2 Instance
@@ -269,13 +268,11 @@ def createInstance(startupScript: str) -> bool:
         logging.error("Instance creation failed: " + str(err))
         return False
     else:
-        logging.info("Instance created successfully on IP: %s",
-                     instance.public_ip_address)
-        print(f"Webserver running at: {instance.public_dns_name}")
+        logging.info("Instance created successfully on IP: %s", instance.public_ip_address)
+        print(f"Webserver running at: http://{instance.public_dns_name}")
 
     try:
-        scp = subprocess.run(
-            ["./scripts/scpScript.sh", keyPair.key_name, instance.public_ip_address])
+        subprocess.run(["./scripts/scpScript.sh", keyPair.key_name, instance.public_ip_address])
 
     except Exception as err:
         logging.error("Instance setup failed: " + str(err))
